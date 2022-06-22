@@ -1,0 +1,81 @@
+version: '2'
+services:
+  web:
+    image: odoo:14
+    environment:
+      - PUID=1000
+      - PGID=1000
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ~/projects/odoo-tutorial/config:/etc/odoo
+    command: --dev xml --log-level=test
+  db:
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - "5432:5432"
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+volumes:
+  odoo-web-data:
+    driver: local
+  odoo-db-data:
+    driver: local
+# version: '3.3'
+# services:
+#   web:
+#     image: odoo:14
+#     # build:
+#     #   context: .
+#     #   dockerfile: Dockerfile.dev
+#     container_name: odoo
+#     tty: true
+#     depends_on:
+#       - db
+#     ports:
+#       - "8069:8069"
+#     volumes:
+#       - web:/var/lib/odoo 
+#       - ./addons:/mnt/extra-addons
+#       - ./config:/etc/odoo
+#   db:
+#     image: postgres:14.1-alpine
+#     container_name: postgres
+#     environment:
+#       - POSTGRES_DB=postgres
+#       - POSTGRES_PASSWORD=odoo
+#       - POSTGRES_USER=odoo
+#       - PGDATA=/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - db:/var/lib/postgresql/data
+# volumes:
+#   web:
+#     driver: local
+#   db:
+#     driver: local
+#   # addons:
+#   #   driver: local
+#   #   # driver_opts:
+#   #   #   type: none
+#   #   #   device: ./addons
+#   #   #   o: bind
+#   # config:
+#   #   driver: local
+#   #   # driver_opts:
+#   #   #   type: none
+#   #   #   device: ./config
+#   #   #   o: bind
+
