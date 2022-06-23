@@ -12,7 +12,7 @@ services:
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
-      - ~/projects/odoo-tutorial/config:/etc/odoo
+      - ./config:/etc/odoo
     command: --dev xml --log-level=test
   db:
     image: postgres:10
